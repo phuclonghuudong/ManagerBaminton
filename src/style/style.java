@@ -1,10 +1,11 @@
 package style;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JButton;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.FontUIResource;
 
 /**
  *
@@ -17,11 +18,39 @@ public class style {
     }
 
     public Color mainBackgroundColor() {
-        return new Color(250, 250, 250);
+        return new Color(240, 247, 250);
+    }
+
+    public Color mainBackgroundColorGray() {
+        return new Color(255, 255, 255);
     }
 
     public Border borderInput() {
         return new EmptyBorder(2, 10, 2, 10);
+    }
+
+    public static void setUIFont16() {
+        Font font = new Font("Tahoma", Font.PLAIN, 16);
+        Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                UIManager.put(key, new FontUIResource(font));
+            }
+        }
+    }
+
+    public static void setUIFont14() {
+        Font font = new Font("Tahoma", Font.PLAIN, 14);
+        Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                UIManager.put(key, new FontUIResource(font));
+            }
+        }
     }
 
     public void hoverButtonCreate(JButton btn) {

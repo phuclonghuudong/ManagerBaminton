@@ -2,6 +2,10 @@ package GUI.Panel;
 
 import GUI.Main;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.*;
 import style.style;
 
@@ -9,20 +13,24 @@ import style.style;
  *
  * @author phucp
  */
-public class KhachHang extends JPanel {
+public class KhachHang extends JPanel implements ActionListener, ItemListener {
 
     style style = new style();
-    Main main;
+    Main m;
 
-    public KhachHang(Main main) {
-        this.main = main;
+    public KhachHang(Main m) {
+        this.m = m;
         initComponents();
         initComponent();
+
     }
 
     public void initComponent() {
         this.setSize(new Dimension(1030, 670));
-        this.setBackground(style.mainBackgroundColorOrange());
+        this.setBackground(style.mainBackgroundColor());
+        this.setLayout(new BorderLayout(0, 0));
+        this.setOpaque(true);
+
     }
 
     /**
@@ -34,29 +42,28 @@ public class KhachHang extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
-        jLabel1.setText("Khach hàng");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(353, 353, 353)
-                .addComponent(jLabel1)
-                .addContainerGap(616, Short.MAX_VALUE))
+            .addGap(0, 1030, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(147, 147, 147)
-                .addComponent(jLabel1)
-                .addContainerGap(507, Short.MAX_VALUE))
+            .addGap(0, 670, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

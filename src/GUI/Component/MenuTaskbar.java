@@ -52,6 +52,7 @@ public class MenuTaskbar extends JPanel {
     }
 
     public void initComponent() {
+
         listitem = new itemTaskbar[getSt.length];
         this.setLayout(new BorderLayout(0, 0));
         this.setBackground(DefaultColor);
@@ -79,7 +80,7 @@ public class MenuTaskbar extends JPanel {
         pnlTop.add(bar2, BorderLayout.SOUTH);
 
         pnlCenter = new JPanel();
-        pnlCenter.setPreferredSize(new Dimension(230, 550));
+        pnlCenter.setPreferredSize(new Dimension(230, 600));
         pnlCenter.setBackground(DefaultColor);
 //        pnlCenter.setBorder(new EmptyBorder(0,15,0,35));
         pnlCenter.setLayout(new FlowLayout(0, 0, 5));

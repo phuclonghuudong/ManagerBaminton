@@ -13,7 +13,6 @@ import style.style;
 public class Main extends javax.swing.JFrame {
 
     style style = new style();
-    Color MainColor = new Color(250, 250, 250);
     private MenuTaskbar menuTaskbar;
     private TrangChu trangChu;
     public JPanel MainContent;
@@ -36,7 +35,7 @@ public class Main extends javax.swing.JFrame {
         this.add(menuTaskbar, BorderLayout.WEST);
 
         MainContent = new JPanel();
-        MainContent.setBackground(MainColor);
+        MainContent.setBackground(style.mainBackgroundColorGray());
         MainContent.setLayout(new BorderLayout(0, 0));
 
         this.add(MainContent, BorderLayout.CENTER);

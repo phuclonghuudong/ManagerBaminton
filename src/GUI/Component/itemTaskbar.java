@@ -4,12 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import style.style;
 
 /**
  *
  * @author phucp
  */
 public class itemTaskbar extends JPanel implements MouseListener {
+
+    style style = new style();
 
     Color FontColor = new Color(96, 125, 139);
     Color ColorBlack = new Color(26, 26, 26);
@@ -20,19 +23,20 @@ public class itemTaskbar extends JPanel implements MouseListener {
     public boolean isSelected;
 
     public itemTaskbar(String linkIcon, String content) {
+        style.setUIFont16();
         this.setLayout(new FlowLayout(1, 10, 7));
         this.setPreferredSize(new Dimension(225, 45));
         this.setBackground(DefaultColor);
         this.addMouseListener(this);
+
         lblIcon = new JLabel();
         lblIcon.setBorder(new EmptyBorder(0, 10, 0, 0));
         lblIcon.setPreferredSize(new Dimension(45, 30));
-        lblIcon.setIcon(new ImageIcon("/icon/" + linkIcon));
+        lblIcon.setIcon(SvgImageComponent.loadSvgAsIcon(linkIcon, 30, 30));
         this.add(lblIcon);
 
         pnlContent = new JLabel(content);
         pnlContent.setPreferredSize(new Dimension(155, 30));
-//        pnlContent.putClientProperty("FlatLaf.style", "font: 145% $medium.font");
         pnlContent.setForeground(ColorBlack);
         this.add(pnlContent);
     }
@@ -45,7 +49,7 @@ public class itemTaskbar extends JPanel implements MouseListener {
 
         lblIcon = new JLabel();
         lblIcon.setPreferredSize(new Dimension(110, 110));
-        lblIcon.setIcon(new ImageIcon("/icon/" + linkIcon));
+        lblIcon.setIcon(SvgImageComponent.loadSvgAsIcon(linkIcon, 30, 30));
 
         this.add(lblIcon);
 
@@ -95,7 +99,7 @@ public class itemTaskbar extends JPanel implements MouseListener {
         lblIcon.setPreferredSize(new Dimension(100, 100));
         lblIcon.setBorder(new EmptyBorder(0, 20, 0, 0));
 
-        lblIcon.setIcon(new ImageIcon("/icon/" + linkIcon));
+        lblIcon.setIcon(SvgImageComponent.loadSvgAsIcon(linkIcon, 30, 30));
         this.add(lblIcon, BorderLayout.WEST);
 
         JPanel center = new JPanel();

@@ -12,14 +12,35 @@ public class TrangChu extends JPanel {
 
     style style = new style();
 
+    JPanel top, center, bar1, bar2;
+
     public TrangChu() {
         initComponents();
         initComponent();
     }
 
     public void initComponent() {
-        this.setSize(new Dimension(1030, 670));
-        this.setBackground(style.mainBackgroundColorOrange());
+//        this.setSize(new Dimension(1030, 670));
+        this.setBounds(0, 200, 300, 1030);
+        this.setBackground(style.mainBackgroundColor());
+        this.setLayout(new BorderLayout(0, 0));
+        this.setOpaque(true);
+
+        top = new JPanel();
+        top.setBackground(style.mainBackgroundColorOrange());
+        top.setPreferredSize(new Dimension(1100, 200));
+        top.setLayout(new FlowLayout(1, 0, 10));
+
+        JLabel slogan = new JLabel();
+        top.add(slogan);
+
+        this.add(top, BorderLayout.NORTH);
+
+        center = new JPanel();
+        center.setBackground(Color.BLACK);
+        center.setPreferredSize(new Dimension(1100, 800));
+        center.setLayout(new FlowLayout(1, 50, 50));
+        this.add(center, BorderLayout.CENTER);
     }
 
     /**

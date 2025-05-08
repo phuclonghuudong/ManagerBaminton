@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.Color;
 import javax.swing.*;
+import style.style;
 
 /**
  *
@@ -12,8 +13,11 @@ public class StartProgram extends javax.swing.JFrame {
     /**
      * Creates new form StartProgram
      */
+    style style = new style();
+
     public StartProgram() {
         super();
+        style.setUIFont16();
         setUndecorated(true);
         initComponents();
 

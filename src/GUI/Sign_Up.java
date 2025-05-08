@@ -1,6 +1,10 @@
 package GUI;
 
+import BUS.KhachHangBUS;
+import DTO.KhachHangDTO;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import style.style;
 
@@ -11,6 +15,10 @@ import style.style;
 public class Sign_Up extends javax.swing.JFrame {
 
     style style = new style();
+    KhachHangBUS khBUS = new KhachHangBUS();
+    KhachHangDTO khDTO = new KhachHangDTO();
+
+    Log_In loginPage = new Log_In();
 
     public Sign_Up() {
         initComponents();
@@ -18,6 +26,7 @@ public class Sign_Up extends javax.swing.JFrame {
     }
 
     public void initComponent() {
+        style.setUIFont14();
         this.setSize(new Dimension(850, 600));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
@@ -37,6 +46,54 @@ public class Sign_Up extends javax.swing.JFrame {
         txtNam.setFocusPainted(false);
         txtNu.setFocusPainted(false);
         style.hoverButtonCreate(btnLogin);
+    }
+
+    public void clear() {
+        txtUsername.setText("");
+        txtEmail.setText("");
+        txtPhone.setText("");
+        txtGender.clearSelection();
+        txtConfirmPassword.setText("");
+        txtPassword.setText("");
+    }
+
+    public void checkRegister() throws UnsupportedLookAndFeelException {
+        try {
+            String username = txtUsername.getText();
+            String email = txtEmail.getText().trim();
+            String phone = txtPhone.getText().trim();
+            String matKhau = new String(txtPassword.getPassword());
+            String nhapLaiMatKhau = new String(txtConfirmPassword.getPassword());
+
+            if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || matKhau.isEmpty() || nhapLaiMatKhau.isEmpty() || (!txtNam.isSelected() && !txtNu.isSelected())) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
+                return;
+            }
+            boolean gender = txtNam.isSelected(); // true: Nam, false: Nữ
+
+            // Kiểm tra mật khẩu nhập lại có khớp không
+            if (!matKhau.equals(nhapLaiMatKhau)) {
+                JOptionPane.showMessageDialog(null, "Mật khẩu xác nhận không khớp.");
+                return;
+            }
+
+            khDTO.setTen_Nguoi_Dung(username);
+            khDTO.setEmail(email);
+            khDTO.setSo_Dien_Thoai(phone);
+            khDTO.setGioi_Tinh(gender);
+            khDTO.setMat_Khau(matKhau);
+
+            String kq = khBUS.registerUser(khDTO);
+            JOptionPane.showMessageDialog(null, kq);
+
+            if (kq.startsWith("Đăng ký thành công!")) {
+                clear();
+                setVisible(false);
+                loginPage.show();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi: " + ex.getMessage());
+        }
     }
 
     /**
@@ -213,33 +270,32 @@ public class Sign_Up extends javax.swing.JFrame {
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addGap(0, 11, Short.MAX_VALUE)
-                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addGap(20, 20, 20))
-                            .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel12)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
-                                    .addComponent(jLabel8)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
-                                    .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(jPanelLayout.createSequentialGroup()
-                                            .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel5)
-                                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(jLabel7)
-                                                    .addComponent(jLabel6)))
-                                            .addGap(73, 73, 73))
-                                        .addGroup(jPanelLayout.createSequentialGroup()
-                                            .addComponent(jLabel11)
-                                            .addGap(18, 18, 18)))
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel7)
+                                                .addComponent(jLabel6)))
+                                        .addGap(73, 73, 73))
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)))
+                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelLayout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4))
                                     .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                                         .addGroup(jPanelLayout.createSequentialGroup()
@@ -319,7 +375,11 @@ public class Sign_Up extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void btnLoginMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMousePressed
-
+        try {
+            checkRegister();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Sign_Up.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnLoginMousePressed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed

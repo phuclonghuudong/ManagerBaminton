@@ -1,6 +1,9 @@
 package GUI;
 
+import BUS.KhachHangBUS;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import style.style;
 
@@ -11,6 +14,8 @@ import style.style;
 public class Log_In extends JFrame {
 
     style style = new style();
+    KhachHangBUS khBus = new KhachHangBUS();
+    Main mainPage = new Main();
 
     public Log_In() {
         initComponents();
@@ -19,6 +24,7 @@ public class Log_In extends JFrame {
     }
 
     public void initComponent() {
+        style.setUIFont14();
         this.setSize(new Dimension(850, 500));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
@@ -36,6 +42,25 @@ public class Log_In extends JFrame {
     public void clear() {
         txtEmail.setText("");
         txtPassword.setText("");
+    }
+
+    public void checkLogin() throws UnsupportedLookAndFeelException {
+        try {
+            String email = txtEmail.getText().trim();
+            String matKhau = new String(txtPassword.getPassword());
+
+            String kq = khBus.loginUser(email, matKhau);
+            JOptionPane.showMessageDialog(null, kq);
+
+            if (kq.startsWith("Đăng nhập thành công")) {
+                setVisible(false);
+
+                mainPage.setVisible(true);
+
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Lỗi: " + ex.getMessage());
+        }
     }
 
     /**
@@ -128,6 +153,9 @@ public class Log_In extends JFrame {
         btnLogin.setMinimumSize(new java.awt.Dimension(64, 23));
         btnLogin.setPreferredSize(new java.awt.Dimension(64, 23));
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoginMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnLoginMousePressed(evt);
             }
@@ -147,29 +175,27 @@ public class Log_In extends JFrame {
                 .addComponent(jLabel1)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 201, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblTitleHeader)
                         .addGap(90, 90, 90))
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addGap(136, 136, 136)
-                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(checkboxShowPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelLayout.createSequentialGroup()
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(30, 30, 30))
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addComponent(jLabel2)
+                                .addGap(30, 30, 30))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(checkboxShowPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtEmail)
-                                    .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtEmail)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
+                        .addContainerGap(102, Short.MAX_VALUE))))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,11 +278,20 @@ public class Log_In extends JFrame {
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void btnLoginMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMousePressed
-    }//GEN-LAST:event_btnLoginMousePressed
+        try {
+            checkLogin();
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Log_In.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }//GEN-LAST:event_btnLoginMousePressed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
+
+    }//GEN-LAST:event_btnLoginMouseClicked
 
     /**
      * @param args the command line arguments
