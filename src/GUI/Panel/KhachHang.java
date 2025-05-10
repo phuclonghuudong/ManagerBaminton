@@ -1,11 +1,12 @@
 package GUI.Panel;
 
+import BUS.KhachHangBUS;
+import DTO.KhachHangDTO;
+import GUI.Component.TableModel;
 import GUI.Main;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 import style.style;
 
@@ -17,6 +18,8 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
 
     style style = new style();
     Main m;
+    public KhachHangBUS khachhangBUS = new KhachHangBUS();
+    public ArrayList<KhachHangDTO> listkh = khachhangBUS.getAll();
 
     public KhachHang(Main m) {
         this.m = m;
@@ -30,7 +33,20 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
         this.setBackground(style.mainBackgroundColor());
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        String[] header = new String[]{"Mã khách hàng", "Tên khách hàng", "Email", "Số điện thoại", "Vai trò", "Ngày tham gia"};
+        String[] methodNames = {"getID", "getTen_Nguoi_Dung", "getEmail", "getSo_Dien_Thoai", "getVai_Tro", "getNgay_Tao"};
+
+        TableModel<KhachHangDTO> tableModel = new TableModel<>(listkh, header, methodNames);
+        JTable table = new JTable(tableModel);
+
+        style.customizeTable(table);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBorder(null);
     }
 
     /**

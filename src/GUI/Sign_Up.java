@@ -65,11 +65,19 @@ public class Sign_Up extends javax.swing.JFrame {
             String matKhau = new String(txtPassword.getPassword());
             String nhapLaiMatKhau = new String(txtConfirmPassword.getPassword());
 
-            if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || matKhau.isEmpty() || nhapLaiMatKhau.isEmpty() || (!txtNam.isSelected() && !txtNu.isSelected())) {
+            if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || matKhau.isEmpty() || nhapLaiMatKhau.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin.");
                 return;
             }
-            boolean gender = txtNam.isSelected(); // true: Nam, false: Nữ
+            boolean gender;
+            if (txtNam.isSelected()) {
+                gender = true;  // Nam
+            } else if (txtNu.isSelected()) {
+                gender = false; // Nữ
+            } else {
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính.");
+                return;
+            }
 
             // Kiểm tra mật khẩu nhập lại có khớp không
             if (!matKhau.equals(nhapLaiMatKhau)) {
@@ -146,7 +154,7 @@ public class Sign_Up extends javax.swing.JFrame {
         btnLogin.setBackground(new java.awt.Color(204, 204, 204));
         btnLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnLogin.setForeground(new java.awt.Color(255, 255, 255));
-        btnLogin.setText("ĐĂNG NHẬP");
+        btnLogin.setText("ĐĂNG KÝ");
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnLogin.setMaximumSize(new java.awt.Dimension(64, 23));
         btnLogin.setMinimumSize(new java.awt.Dimension(64, 23));

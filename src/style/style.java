@@ -6,6 +6,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -78,6 +80,48 @@ public class style {
 
             private String rgb(int i, int i0, int i1) {
                 throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+        });
+    }
+
+    public void customizeTable(JTable table) {
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setRowHeight(32);
+        table.setShowGrid(false);
+        table.setBorder(null);
+
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+                if (!isSelected) {
+                    c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 245, 245));
+                } else {
+                    c.setBackground(new Color(220, 230, 240));
+                    c.setForeground(new Color(0));
+                }
+                setHorizontalAlignment(SwingConstants.CENTER);
+                return c;
+            }
+        });
+
+        JTableHeader header = table.getTableHeader();
+
+        header.setPreferredSize(new Dimension(header.getPreferredSize().width, 40));
+        header.setReorderingAllowed(false);
+
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setBackground(new Color(255, 204, 153));
+                label.setForeground(Color.BLACK);
+                label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                label.setOpaque(true);
+                return label;
             }
         });
     }

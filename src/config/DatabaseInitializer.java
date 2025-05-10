@@ -38,7 +38,7 @@ public class DatabaseInitializer {
                     + "Ngay_Sinh DATE,"
                     + "So_Dien_Thoai VARCHAR(20),"
                     + "Mat_Khau VARCHAR(255),"
-                    + "Gioi_Tinh VARCHAR(10),"
+                    + "Gioi_Tinh BOOLEAN,"
                     + "Vai_Tro VARCHAR(50),"
                     + "Status INT,"
                     + "Ngay_Tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"

@@ -163,7 +163,7 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
     public KhachHangDTO getUserByEmailAndPassword(String email, String hashedPassword) {
         try {
             Connection conn = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM khach_hang WHERE Email = ? AND Mat_Khau = ? AND Status = 1";
+            String sql = "SELECT * FROM khach_hang WHERE Email = ? AND Mat_Khau = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
             stmt.setString(2, hashedPassword);
