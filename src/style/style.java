@@ -1,5 +1,6 @@
 package style;
 
+import GUI.Component.SvgImageComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -55,7 +56,98 @@ public class style {
         }
     }
 
+//    Button
     public void hoverButtonCreate(JButton btn) {
+        btn.setForeground(new Color(250, 241, 230));
+        btn.setBackground(new Color(50, 142, 110));
+
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setOpaque(true);
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btn.setForeground(Color.BLACK);
+                btn.setBackground(new Color(103, 174, 110));
+                btn.setOpaque(true);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btn.setForeground(new Color(250, 241, 230));
+                btn.setBackground(new Color(50, 142, 110));
+                btn.setOpaque(true);
+            }
+
+        });
+    }
+
+    public void ButtonCreate(JButton btn) {
+        btn.setForeground(new Color(250, 241, 230));
+        btn.setBackground(new Color(50, 142, 110));
+
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setFocusPainted(false);
+        btn.setOpaque(true);
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btn.setForeground(Color.BLACK);
+                btn.setBackground(new Color(103, 174, 110));
+                btn.setOpaque(true);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btn.setForeground(new Color(250, 241, 230));
+                btn.setBackground(new Color(50, 142, 110));
+                btn.setOpaque(true);
+            }
+
+        });
+    }
+
+    public void ButtonSearch(JButton btn, String icon) {
+        btn.setForeground(Color.BLACK);
+        btn.setBackground(new Color(255, 204, 153));
+        btn.setPreferredSize(new Dimension(125, 0));
+        btn.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btn.setFocusPainted(true);
+        btn.setOpaque(true);
+        btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(true);
+
+        btn.setIcon(SvgImageComponent.loadSvgAsIcon(icon, 35, 40));
+
+        // Mouse Listener để xử lý hiệu ứng hover
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btn.setForeground(Color.BLACK);
+                btn.setBackground(new Color(103, 174, 110));
+                btn.setContentAreaFilled(false);
+                btn.setBorderPainted(true); // Đảm bảo border được vẽ khi hover
+                btn.setOpaque(true);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btn.setForeground(Color.BLACK);
+                btn.setBackground(new Color(255, 204, 153));
+                btn.setContentAreaFilled(false); // Set lại phần nội dung của nút không tô màu khi rời chuột
+                btn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+                btn.setBorderPainted(true); // Đảm bảo border vẫn được vẽ
+            }
+        });
+    }
+
+    public void buttonCustome(JButton btn) {
+        if (btn == null) {
+            return;
+        }
         btn.setForeground(new Color(250, 241, 230));
         btn.setBackground(new Color(50, 142, 110));
 
@@ -74,7 +166,7 @@ public class style {
             @Override
             public void mouseExited(MouseEvent e) {
                 btn.setForeground(new Color(250, 241, 230));
-                btn.setBackground(new Color(50, 142, 110));
+                btn.setBackground(new Color(255, 204, 153));
                 btn.setOpaque(true);
             }
 
@@ -84,6 +176,7 @@ public class style {
         });
     }
 
+//  Table Model
     public void customizeTable(JTable table) {
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         table.setRowHeight(32);

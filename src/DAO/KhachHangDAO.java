@@ -76,7 +76,7 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
         int result = 0;
         try {
             Connection con = (Connection) JDBCUtil.getConnection();
-            String sql = "UPDATE  `khachhang` SET Status=0 WHERE `ID` = ?";
+            String sql = "UPDATE  `khach_hang` SET Status=0 WHERE `ID` = ?";
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, p);
             result = pst.executeUpdate();
@@ -126,7 +126,24 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
 
     @Override
     public int getAutoIncrement() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = -1;
+        try {
+            Connection con = (Connection) JDBCUtil.getConnection();
+            String sql = "SELECT `AUTO_INCREMENT` FROM  INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'quan_lY_san_cau_long' AND TABLE_NAME = 'khach_hang'";
+            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            ResultSet rs2 = pst.executeQuery(sql);
+            if (!rs2.isBeforeFirst()) {
+                System.out.println("No data");
+            } else {
+                while (rs2.next()) {
+                    result = rs2.getInt("AUTO_INCREMENT");
+
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(KhachHangDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
 
     public boolean selectByEmail(String p) {

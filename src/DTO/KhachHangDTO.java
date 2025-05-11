@@ -20,6 +20,19 @@ public class KhachHangDTO {
     public KhachHangDTO() {
     }
 
+    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, String So_Dien_Thoai) {
+//    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, Date Ngay_Sinh, String So_Dien_Thoai, String Vai_Tro, boolean Gioi_Tinh, Date Ngay_Cap_Nhat, int Status) {
+        this.ID = ID;
+        this.Ten_Nguoi_Dung = Ten_Nguoi_Dung;
+        this.Email = Email;
+        this.So_Dien_Thoai = So_Dien_Thoai;
+//        this.Ngay_Sinh = Ngay_Sinh;
+//        this.Vai_Tro = Vai_Tro;
+//        this.Gioi_Tinh = Gioi_Tinh;
+//        this.Ngay_Cap_Nhat = Ngay_Cap_Nhat;
+//        this.Status = Status;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -85,20 +98,6 @@ public class KhachHangDTO {
     @Override
     public String toString() {
         return "KhachHangDTO{" + "ID=" + ID + ", Ten_Nguoi_Dung=" + Ten_Nguoi_Dung + ", Email=" + Email + ", Ngay_Sinh=" + Ngay_Sinh + ", So_Dien_Thoai=" + So_Dien_Thoai + ", Mat_Khau=" + Mat_Khau + ", Vai_Tro=" + Vai_Tro + ", Gioi_Tinh=" + Gioi_Tinh + ", Ngay_Tao=" + Ngay_Tao + ", Ngay_Cap_Nhat=" + Ngay_Cap_Nhat + ", Status=" + Status + '}';
-    }
-
-    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, Date Ngay_Sinh, String So_Dien_Thoai, String Mat_Khau, String Vai_Tro, boolean Gioi_Tinh, Date Ngay_Tao, Date Ngay_Cap_Nhat, int Status) {
-        this.ID = ID;
-        this.Ten_Nguoi_Dung = Ten_Nguoi_Dung;
-        this.Email = Email;
-        this.Ngay_Sinh = Ngay_Sinh;
-        this.So_Dien_Thoai = So_Dien_Thoai;
-        this.Mat_Khau = Mat_Khau;
-        this.Vai_Tro = Vai_Tro;
-        this.Gioi_Tinh = Gioi_Tinh;
-        this.Ngay_Tao = Ngay_Tao;
-        this.Ngay_Cap_Nhat = Ngay_Cap_Nhat;
-        this.Status = Status;
     }
 
     public int getID() {

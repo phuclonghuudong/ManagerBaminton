@@ -1,6 +1,7 @@
 package GUI;
 
 import BUS.KhachHangBUS;
+import GUI.Component.ButtonCustome;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ public class Log_In extends JFrame {
     style style = new style();
     KhachHangBUS khBus = new KhachHangBUS();
     Main mainPage = new Main();
+    private ButtonCustome btnCustome;
 
     public Log_In() {
         initComponents();
@@ -28,7 +30,7 @@ public class Log_In extends JFrame {
         this.setSize(new Dimension(850, 500));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
-        this.setTitle("Hệ thống quản lý sân cầu lông ");
+        this.setTitle("Hệ thống sân cầu lông ");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         jPanel.setBackground(style.mainBackgroundColorOrange());
@@ -36,7 +38,7 @@ public class Log_In extends JFrame {
         txtEmail.setBorder(style.borderInput());
         txtPassword.setBorder(style.borderInput());
         checkboxShowPassword.setFocusPainted(false);
-        style.hoverButtonCreate(btnLogin);
+        style.ButtonCreate(btnLogin);
     }
 
     public void clear() {

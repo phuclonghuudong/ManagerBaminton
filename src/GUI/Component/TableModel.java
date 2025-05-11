@@ -1,5 +1,6 @@
 package GUI.Component;
 
+import java.lang.reflect.Method;
 import java.util.*;
 import javax.swing.table.AbstractTableModel;
 
@@ -45,12 +46,20 @@ public class TableModel<T> extends AbstractTableModel {
         String methodName = methodNames.get(columnIndex);
 
         try {
-            // Sử dụng Reflection để gọi getter method tương ứng
-            java.lang.reflect.Method method = rowData.getClass().getMethod(methodName);
-            return method.invoke(rowData);
+            Method method = rowData.getClass().getMethod(methodName);
+            Object value = method.invoke(rowData);
+
+            // Xử lý riêng cho getGioiTinh()
+            if (methodName.equals("isGioi_Tinh") && value instanceof Boolean) {
+                return ((Boolean) value) ? "Nữ" : "Nam";
+            }
+            if (methodName.equals("getStatus") && value instanceof Integer) {
+                return ((Integer) value) == 1 ? "Hoạt động" : "Dừng";
+            }
+            return value;
         } catch (NoSuchMethodException | java.lang.reflect.InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
-            return null; // Hoặc xử lý lỗi khác tùy theo yêu cầu
+            return null;
         }
     }
 

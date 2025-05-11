@@ -85,6 +85,75 @@ public class KhachHangBUS {
         return "Đăng nhập thành công! Xin chào " + user.getTen_Nguoi_Dung();
     }
 
+    public int getIndexByMaDV(int makhachhang) {
+        int i = 0;
+        int vitri = -1;
+        while (i < this.listKhachHang.size() && vitri == -1) {
+            if (listKhachHang.get(i).getID() == makhachhang) {
+                vitri = i;
+            } else {
+                i++;
+            }
+        }
+        return vitri;
+    }
+
+    public Boolean add(KhachHangDTO kh) {
+        boolean check = khDAO.insert(kh) != 0;
+        if (check) {
+            this.listKhachHang.add(kh);
+        }
+        return check;
+    }
+
+    public Boolean delete(KhachHangDTO kh) {
+        boolean check = khDAO.delete(Integer.toString(kh.getID())) != 0;
+        if (check) {
+            this.listKhachHang.remove(getIndexByMaDV(kh.getID()));
+        }
+        return check;
+    }
+
+    public Boolean update(KhachHangDTO kh) {
+        boolean check = khDAO.update(kh) != 0;
+        if (check) {
+            this.listKhachHang.set(getIndexByMaDV(kh.getID()), kh);
+        }
+        return check;
+    }
+
+    public String getTenKhachHang(int makh) {
+        String name = "";
+        for (KhachHangDTO khachHangDTO : listKhachHang) {
+            if (khachHangDTO.getID() == makh) {
+                name = khachHangDTO.getTen_Nguoi_Dung();
+            }
+        }
+        return name;
+    }
+
+    public String[] getArrTenKhachHang() {
+        int size = listKhachHang.size();
+        String[] result = new String[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = listKhachHang.get(i).getTen_Nguoi_Dung();
+        }
+        return result;
+    }
+
+    public String[] getArrVaiTro() {
+        int size = listKhachHang.size();
+        String[] result = new String[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = listKhachHang.get(i).getVai_Tro();
+        }
+        return result;
+    }
+
+    public KhachHangDTO selectKh(int makh) {
+        return khDAO.selectById(makh + "");
+    }
+
     public ArrayList<KhachHangDTO> search(String text, String type) {
         ArrayList<KhachHangDTO> result = new ArrayList<>();
         text = text.toLowerCase();
@@ -124,6 +193,30 @@ public class KhachHangBUS {
                     }
                 }
             }
+            case "Vai trò" -> {
+                for (KhachHangDTO i : this.listKhachHang) {
+                    if (i.getVai_Tro().toLowerCase().contains(text)) {
+                        result.add(i);
+                    }
+                }
+            }
+            case "Trạng thái" -> {
+                for (KhachHangDTO i : this.listKhachHang) {
+                    String trangThai = i.getStatus() == 1 ? "Hoạt động" : "Dừng";
+                    if (trangThai.toLowerCase().contains(text.toLowerCase())) {
+                        result.add(i);
+                    }
+                }
+            }
+            case "Giới tính" -> {
+                for (KhachHangDTO i : this.listKhachHang) {
+                    String gioiTinh = i.isGioi_Tinh() ? "Nữ" : "Nam";
+                    if (gioiTinh.toLowerCase().contains(text.toLowerCase())) {
+                        result.add(i);
+                    }
+                }
+            }
+
         }
 
         return result;

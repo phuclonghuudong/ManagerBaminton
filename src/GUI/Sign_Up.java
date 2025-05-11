@@ -2,6 +2,7 @@ package GUI;
 
 import BUS.KhachHangBUS;
 import DTO.KhachHangDTO;
+import GUI.Component.ButtonCustome;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ public class Sign_Up extends javax.swing.JFrame {
     style style = new style();
     KhachHangBUS khBUS = new KhachHangBUS();
     KhachHangDTO khDTO = new KhachHangDTO();
+    private ButtonCustome btnCustome;
 
     Log_In loginPage = new Log_In();
 
@@ -30,7 +32,7 @@ public class Sign_Up extends javax.swing.JFrame {
         this.setSize(new Dimension(850, 600));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
-        this.setTitle("Hệ thống quản lý sân cầu lông ");
+        this.setTitle("Hệ thống sân cầu lông ");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         jPanel.setBackground(style.mainBackgroundColorOrange());
@@ -45,7 +47,7 @@ public class Sign_Up extends javax.swing.JFrame {
         txtGender.add(txtNu);
         txtNam.setFocusPainted(false);
         txtNu.setFocusPainted(false);
-        style.hoverButtonCreate(btnLogin);
+        style.ButtonCreate(btnLogin);
     }
 
     public void clear() {
