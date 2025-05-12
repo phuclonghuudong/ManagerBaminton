@@ -73,15 +73,14 @@ public class Sign_Up extends javax.swing.JFrame {
             }
             boolean gender;
             if (txtNam.isSelected()) {
-                gender = true;  // Nam
+                gender = false;  // Nam
             } else if (txtNu.isSelected()) {
-                gender = false; // Nữ
+                gender = true; // Nữ
             } else {
                 JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính.");
                 return;
             }
 
-            // Kiểm tra mật khẩu nhập lại có khớp không
             if (!matKhau.equals(nhapLaiMatKhau)) {
                 JOptionPane.showMessageDialog(null, "Mật khẩu xác nhận không khớp.");
                 return;

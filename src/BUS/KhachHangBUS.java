@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -142,12 +144,17 @@ public class KhachHangBUS {
     }
 
     public String[] getArrVaiTro() {
-        int size = listKhachHang.size();
-        String[] result = new String[size];
-        for (int i = 0; i < size; i++) {
-            result[i] = listKhachHang.get(i).getVai_Tro();
+        Set<String> vaiTroSet = new HashSet<>();
+        for (KhachHangDTO kh : listKhachHang) {
+            vaiTroSet.add(kh.getVai_Tro());
         }
-        return result;
+        return vaiTroSet.toArray(new String[0]);
+//        int size = listKhachHang.size();
+//        String[] result = new String[size];
+//        for (int i = 0; i < size; i++) {
+//            result[i] = listKhachHang.get(i).getVai_Tro();
+//        }
+//        return result;
     }
 
     public KhachHangDTO selectKh(int makh) {

@@ -1,29 +1,39 @@
 package GUI.Component;
 
-import java.awt.*;
-import javax.swing.DefaultComboBoxModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import style.StyleColor;
 
 /**
  *
  * @author phucp
  */
-public class SelectForm extends JPanel {
+public class FormSelect extends JPanel {
 
     private JLabel lblTitle;
     public JComboBox cbb;
+    StyleColor StyleColor = new StyleColor();
 
-    public SelectForm(String title, String[] obj) {
+    public FormSelect(String title, String[] obj) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
-        this.setBorder(new EmptyBorder(0, 10, 5, 10));
+        this.setBorder(new EmptyBorder(5, 10, 5, 10));
+        this.setPreferredSize(new Dimension(100, 100));
 
         lblTitle = new JLabel(title);
+        lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 14));
         cbb = new JComboBox(obj);
         cbb.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        cbb.setBackground(new Color(255, 204, 153));
+        cbb.setBackground(StyleColor.colorForm());
         cbb.setForeground(new Color(50, 50, 50));
         cbb.setBorder(BorderFactory.createEmptyBorder());
         cbb.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -39,7 +49,7 @@ public class SelectForm extends JPanel {
 
             @Override
             public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
-                g.setColor(new Color(250, 241, 230));
+                g.setColor(StyleColor.colorForm());
                 g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
             }
         });
@@ -51,7 +61,7 @@ public class SelectForm extends JPanel {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setBorder(new EmptyBorder(5, 10, 5, 10));
                 if (isSelected) {
-                    label.setBackground(new Color(255, 204, 153));  // Màu nền khi chọn
+                    label.setBackground(StyleColor.colorForm());  // Màu nền khi chọn
                     label.setForeground(Color.BLACK);                // Màu chữ khi chọn
                 } else {
                     label.setBackground(Color.WHITE);               // Màu nền khi không chọn
@@ -109,21 +119,22 @@ public class SelectForm extends JPanel {
     }
 
     public void setDisable() {
+        cbb.setEditable(false);
         cbb.setEnabled(false);
-        cbb.setBackground(new Color(220, 220, 220)); // màu nền xám nhẹ khi bị disable
+        cbb.setBackground(StyleColor.colorFormDisabled());
         cbb.setForeground(Color.GRAY);
         cbb.setUI(new BasicComboBoxUI() {
             @Override
             protected JButton createArrowButton() {
                 JButton arrowButton = super.createArrowButton();
-                arrowButton.setBackground(new Color(220, 220, 220));
+                arrowButton.setBackground(StyleColor.colorFormDisabled());
                 arrowButton.setBorder(null);
                 return arrowButton;
             }
 
             @Override
             public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
-                g.setColor(new Color(220, 220, 220));
+                g.setColor(StyleColor.colorFormDisabled());
                 g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
             }
         });

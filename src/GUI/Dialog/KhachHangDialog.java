@@ -4,10 +4,12 @@ import BUS.KhachHangBUS;
 import DAO.KhachHangDAO;
 import DTO.KhachHangDTO;
 import GUI.Component.ButtonCustome;
+import GUI.Component.FormCheckbox;
+import GUI.Component.FormDate;
+import GUI.Component.FormInput;
+import GUI.Component.FormSelect;
 import GUI.Component.HeaderTitle;
-import GUI.Component.InputForm;
 import GUI.Component.NumericDocumentFilter;
-import GUI.Component.SelectForm;
 import GUI.Panel.KhachHang;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -16,6 +18,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.PlainDocument;
 import helper.Validation;
+import java.util.Date;
 
 /**
  *
@@ -27,25 +30,35 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     private HeaderTitle titlePage;
     private JPanel pnlMain, pnlButtom;
     ButtonCustome btnThem, btnCapNhat, btnHuyBo;
-    private InputForm ten_Nguoi_Dung, so_Dien_Thoai, Email, vai_Tro, status, gioi_Tinh, ngay_Sinh;
+    private FormInput tenNguoiDung, soDienThoai, Email, vaiTro;
     private JTextField maKH;
     KhachHangDTO khDTO;
     KhachHangBUS khachHangBUS = new KhachHangBUS();
-    SelectForm cbxVaiTro;
+    private FormSelect cbxVaiTro;
+    private FormCheckbox cbxStatus, cbxGioiTinh;
+    private FormDate dayNgaySinh;
 
     public KhachHangDialog(KhachHang jPanelKH, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
         this.jPanelKH = jPanelKH;
-        ten_Nguoi_Dung = new InputForm("Tên khách hàng");
-        Email = new InputForm("Email");
-        so_Dien_Thoai = new InputForm("Số điện thoại");
-        PlainDocument phonex = (PlainDocument) so_Dien_Thoai.getTxtForm().getDocument();
+        tenNguoiDung = new FormInput("Tên khách hàng");
+        Email = new FormInput("Email");
+
+        soDienThoai = new FormInput("Số điện thoại");
+        PlainDocument phonex = (PlainDocument) soDienThoai.getTxtForm().getDocument();
         phonex.setDocumentFilter((new NumericDocumentFilter()));
 
         String[] listKh = khachHangBUS.getArrVaiTro();
-        cbxVaiTro = new SelectForm("Vai trò", listKh);
+        cbxVaiTro = new FormSelect("Vai trò", listKh);
 
-        status = new InputForm("Trạng thái");
+        String[] listStatus = new String[]{"Hoạt động", "Dừng"};
+        cbxStatus = new FormCheckbox("Trạng thái", listStatus);
+
+        String[] listGioiTinh = new String[]{"Nam", "Nữ"};
+        cbxGioiTinh = new FormCheckbox("Giới tính", listGioiTinh);
+
+        dayNgaySinh = new FormDate("Ngày sinh:");
+
         initComponents(title, type);
     }
 
@@ -54,34 +67,47 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
         this.khDTO = kh;
         maKH = new JTextField("");
         setID(Integer.toString(kh.getID()));
-        ten_Nguoi_Dung = new InputForm("Tên người dùng");
+        tenNguoiDung = new FormInput("Tên người dùng");
         setTen_Nguoi_Dung(kh.getTen_Nguoi_Dung());
-        so_Dien_Thoai = new InputForm("Số điện thoại");
+        soDienThoai = new FormInput("Số điện thoại");
         setSo_Dien_Thoai(kh.getSo_Dien_Thoai());
-        Email = new InputForm("Email");
+        Email = new FormInput("Email");
         setEmail(kh.getEmail());
-//        vai_Tro = new InputForm("Vai trò");
-//        setVai_Tro(kh.getVai_Tro());
 
         String[] listKh = khachHangBUS.getArrVaiTro();
-        cbxVaiTro = new SelectForm("Vai trò", listKh);
+        cbxVaiTro = new FormSelect("Vai trò", listKh);
         cbxVaiTro.setSelectedItem(kh.getVai_Tro());
+
+        String[] listStatus = new String[]{"Hoạt động", "Dừng"};
+        cbxStatus = new FormCheckbox("Trạng thái", listStatus);
+        setStatus(kh.getStatus());
+
+        String[] listGioiTinh = new String[]{"Nam", "Nữ"};
+        cbxGioiTinh = new FormCheckbox("Giới tính", listGioiTinh);
+        setGioi_Tinh(kh.isGioi_Tinh());
+
+        dayNgaySinh = new FormDate("Ngày sinh");
+        setNgay_Sinh(kh.getNgay_Sinh());
 
         this.jPanelKH = jPanelKH;
         initComponents(title, type);
     }
 
     public void initComponents(String title, String type) {
-        this.setSize(new Dimension(500, 500));
+        this.setSize(new Dimension(700, 500));
         this.setLayout(new BorderLayout(0, 0));
+
         titlePage = new HeaderTitle(title.toUpperCase());
-        pnlMain = new JPanel(new GridLayout(4, 2, 20, 0));
+        pnlMain = new JPanel(new GridLayout(4, 2, 5, 0));
         pnlMain.setBackground(Color.white);
 
-        pnlMain.add(ten_Nguoi_Dung);
-        pnlMain.add(so_Dien_Thoai);
+        pnlMain.add(tenNguoiDung);
+        pnlMain.add(soDienThoai);
         pnlMain.add(Email);
         pnlMain.add(cbxVaiTro);
+        pnlMain.add(cbxGioiTinh);
+        pnlMain.add(cbxStatus);
+        pnlMain.add(dayNgaySinh);
 
         pnlButtom = new JPanel(new FlowLayout());
         pnlButtom.setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -100,10 +126,14 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
             case "update" ->
                 pnlButtom.add(btnCapNhat);
             case "view" -> {
-                ten_Nguoi_Dung.setDisable();
+                tenNguoiDung.setDisable();
                 Email.setDisable();
-                so_Dien_Thoai.setDisable();
+                soDienThoai.setDisable();
                 cbxVaiTro.setDisable();
+                cbxStatus.setDisabled();
+                cbxGioiTinh.setDisabled();
+                cbxStatus.setDisabled();
+                dayNgaySinh.setDisabled();
             }
             default ->
                 throw new AssertionError();
@@ -126,11 +156,11 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     }
 
     public String getTen_Nguoi_Dung() {
-        return ten_Nguoi_Dung.getText();
+        return tenNguoiDung.getText();
     }
 
     public void setTen_Nguoi_Dung(String Ten_Nguoi_Dung) {
-        ten_Nguoi_Dung.setText(Ten_Nguoi_Dung);
+        tenNguoiDung.setText(Ten_Nguoi_Dung);
     }
 
     public String getEmail() {
@@ -141,19 +171,20 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
         Email.setText(email);
     }
 
-//    public String getNgay_Sinh() {
-//        return ngay_Sinh.getText();
-//    }
-//
-//    public void setNgay_Sinh(Date Ngay_Sinh) {
-//        ngay_Sinh.setText(Ngay_Sinh);
-//    }
+    public String getNgay_Sinh() {
+        return dayNgaySinh.getFormattedDate();
+    }
+
+    public void setNgay_Sinh(Date Ngay_Sinh) {
+        dayNgaySinh.setSelectedDate(Ngay_Sinh);
+    }
+
     public String getSo_Dien_Thoai() {
-        return so_Dien_Thoai.getText();
+        return soDienThoai.getText();
     }
 
     public void setSo_Dien_Thoai(String So_Dien_Thoai) {
-        so_Dien_Thoai.setText(So_Dien_Thoai);
+        soDienThoai.setText(So_Dien_Thoai);
     }
 
     public String getVai_Tro() {
@@ -165,26 +196,31 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     }
 
     public String isGioi_Tinh() {
-        return gioi_Tinh.getText();
+        var selected = cbxGioiTinh.getSelectedValues();
+        return selected.isEmpty() ? null : selected.get(0);
     }
 
-    public void setGioi_Tinh(boolean Gioi_Tinh) {
-        gioi_Tinh.setText(Gioi_Tinh ? "Nam" : "Nữ");
+    public void setGioi_Tinh(boolean gioiTinh) {
+        String[] value = new String[]{gioiTinh ? "Nữ" : "Nam"};
+        cbxGioiTinh.setSelectedValues(value);
     }
 
     public String getStatus() {
-        return status.getText();
+        var selected = cbxStatus.getSelectedValues();
+        return selected.isEmpty() ? null : selected.get(0);
+
     }
 
-    public void setStatus(String Status) {
-        status.setText(Status);
+    public void setStatus(int giatri) {
+        String[] value = new String[]{giatri == 1 ? "Hoạt động" : "Dừng"};
+        cbxStatus.setSelectedValues(value);
     }
 
     boolean Validation() {
-        if (Validation.isEmpty(ten_Nguoi_Dung.getText())) {
+        if (Validation.isEmpty(tenNguoiDung.getText())) {
             JOptionPane.showMessageDialog(this, "Tên người dùng không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (Validation.isEmpty(so_Dien_Thoai.getText()) || !Validation.isNumber(so_Dien_Thoai.getText()) && so_Dien_Thoai.getText().length() != 10) {
+        } else if (Validation.isEmpty(soDienThoai.getText()) || !Validation.isNumber(soDienThoai.getText()) && soDienThoai.getText().length() != 10) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
         } else if (Validation.isEmpty(Email.getText())) {
@@ -203,14 +239,14 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == btnThem && Validation()) {
             int id = KhachHangDAO.getInstance().getAutoIncrement();
-            jPanelKH.khachhangBUS.add(new DTO.KhachHangDTO(id, ten_Nguoi_Dung.getText(), so_Dien_Thoai.getText(), Email.getText()));
+            jPanelKH.khachhangBUS.add(new DTO.KhachHangDTO(id, tenNguoiDung.getText(), Email.getText(), soDienThoai.getText()));
             jPanelKH.loadDataTable(jPanelKH.listkh);
             dispose();
 
         } else if (e.getSource() == btnHuyBo) {
             dispose();
         } else if (e.getSource() == btnCapNhat && Validation()) {
-            jPanelKH.khachhangBUS.update(new KhachHangDTO(khDTO.getID(), ten_Nguoi_Dung.getText(), so_Dien_Thoai.getText(), Email.getText()));
+            jPanelKH.khachhangBUS.update(new KhachHangDTO(khDTO.getID(), tenNguoiDung.getText(), Email.getText(), soDienThoai.getText()));
             jPanelKH.loadDataTable(jPanelKH.listkh);
             dispose();
         }

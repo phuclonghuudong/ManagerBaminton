@@ -1,48 +1,51 @@
 package GUI.Component;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import javax.accessibility.AccessibleContext;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.ComponentUI;
+import style.StyleColor;
 
 /**
  *
  * @author phucp
  */
-public class InputForm extends JPanel {
+public class FormInput extends JPanel {
 
     private JLabel lblTitle;
     private JTextField txtForm;
     private JPasswordField txtPass;
+    StyleColor StyleColor = new StyleColor();
 
-    public InputForm() {
-    }
-
-    public InputForm(String title) {
+    public FormInput(String title) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
-        this.setBorder(new EmptyBorder(0, 10, 5, 10));
-        this.setPreferredSize(new Dimension(100, 100));
+        this.setBorder(new EmptyBorder(5, 10, 5, 10));
+
         lblTitle = new JLabel(title);
+        lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 14));
+
         txtForm = new JTextField();
         txtForm.setBorder(new EmptyBorder(2, 10, 2, 10));
-        txtForm.setBackground(new Color(250, 241, 230));
+        txtForm.setBackground(StyleColor.colorForm());
+        txtForm.setOpaque(true);
+        txtForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
         this.add(lblTitle);
         this.add(txtForm);
     }
 
-    public InputForm(String title, String style) {
+    public FormInput(String title, String style) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
         this.setBorder(new EmptyBorder(10, 10, 5, 10));
         lblTitle = new JLabel(title);
+        lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 14));
         this.add(lblTitle);
         if (style.equals("password")) {
             txtPass = new JPasswordField();
@@ -50,17 +53,22 @@ public class InputForm extends JPanel {
         }
     }
 
-    public InputForm(String title, int w, int h) {
+    public FormInput(String title, int w, int h) {
         this.setLayout(new GridLayout(2, 1));
         this.setBackground(Color.white);
-//        this.setBorder(new EmptyBorder(0, 10, 5, 10));
+        this.setBorder(new EmptyBorder(2, 10, 2, 10));
         this.setPreferredSize(new Dimension(w, h));
         lblTitle = new JLabel(title);
         txtForm = new JTextField();
-        txtForm.setBorder(new EmptyBorder(2, 10, 2, 10));
+        txtForm.setBorder(new EmptyBorder(0, 10, 2, 10));
+        txtForm.setFont(new Font("Tahoma", Font.PLAIN, 14));
         txtForm.setBackground(new Color(250, 241, 230));
+        txtForm.setOpaque(true);
         this.add(lblTitle);
         this.add(txtForm);
+    }
+
+    public FormInput() {
     }
 
     public void setTitle(String title) {
@@ -137,7 +145,10 @@ public class InputForm extends JPanel {
     }
 
     public void setDisable() {
-        txtForm.setEnabled(false);
+        txtForm.setEditable(false);
+        txtForm.setBackground(StyleColor.colorFormDisabled());
+        txtForm.setForeground(Color.GRAY);
+        txtForm.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     public void setEditable(boolean value) {

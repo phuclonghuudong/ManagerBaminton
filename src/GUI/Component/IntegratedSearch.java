@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 
 /**
  *
@@ -28,12 +29,44 @@ public class IntegratedSearch extends JPanel {
         jpSearch.setBackground(Color.white);
         cbxChoose = new JComboBox();
         cbxChoose.setModel(new DefaultComboBoxModel<>(str));
-        cbxChoose.setPreferredSize(new Dimension(140, 0));
+        cbxChoose.setPreferredSize(new Dimension(140, 30));
         cbxChoose.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        cbxChoose.setFocusable(false);
-        cbxChoose.setOpaque(false);
-        cbxChoose.setBackground(Color.WHITE);
-        cbxChoose.setForeground(Color.BLACK);
+        cbxChoose.setBackground(new Color(255, 204, 153));
+        cbxChoose.setForeground(new Color(50, 50, 50));
+        cbxChoose.setBorder(BorderFactory.createEmptyBorder());
+        cbxChoose.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cbxChoose.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                JButton arrowButton = super.createArrowButton();
+                arrowButton.setBackground(new Color(250, 241, 230));
+                arrowButton.setBorder(null);
+                return arrowButton;
+            }
+
+            @Override
+            public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
+                g.setColor(new Color(250, 241, 230));
+                g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+            }
+        });
+        cbxChoose.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setBorder(new EmptyBorder(5, 10, 5, 10));
+                if (isSelected) {
+                    label.setBackground(new Color(255, 204, 153));  // Màu nền khi chọn
+                    label.setForeground(Color.BLACK);                // Màu chữ khi chọn
+                } else {
+                    label.setBackground(Color.WHITE);               // Màu nền khi không chọn
+                    label.setForeground(Color.BLACK);               // Màu chữ khi không chọn
+                }
+                return label;
+            }
+        });
 
         jpSearch.add(cbxChoose, BorderLayout.WEST);
 
@@ -48,7 +81,7 @@ public class IntegratedSearch extends JPanel {
         btnReset = new JButton("Làm mới");
         btnReset.setBackground(new Color(255, 204, 153));
         btnReset.setForeground(Color.BLACK);
-        btnReset.setPreferredSize(new Dimension(125, 0));
+        btnReset.setPreferredSize(new Dimension(125, 40));
         btnReset.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnReset.setBorderPainted(false);
         btnReset.setContentAreaFilled(false);
@@ -56,7 +89,7 @@ public class IntegratedSearch extends JPanel {
         btnReset.setOpaque(true);
         btnReset.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-        btnReset.setIcon(SvgImageComponent.loadSvgAsIcon("refresh.svg", 35, 40));
+        btnReset.setIcon(SvgImageComponent.loadSvgAsIcon("refresh.svg", 35, 30));
 
         btnReset.addMouseListener(new MouseAdapter() {
             @Override
