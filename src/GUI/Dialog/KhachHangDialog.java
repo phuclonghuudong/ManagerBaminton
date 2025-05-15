@@ -26,21 +26,22 @@ import java.util.Date;
  */
 public final class KhachHangDialog extends JDialog implements MouseListener {
 
-    KhachHang jPanelKH;
     private HeaderTitle titlePage;
     private JPanel pnlMain, pnlButtom;
-    ButtonCustome btnThem, btnCapNhat, btnHuyBo;
+    private ButtonCustome btnThem, btnCapNhat, btnHuyBo;
     private FormInput tenNguoiDung, soDienThoai, Email, vaiTro;
     private JTextField maKH;
-    KhachHangDTO khDTO;
-    KhachHangBUS khachHangBUS = new KhachHangBUS();
     private FormSelect cbxVaiTro;
     private FormCheckbox cbxStatus, cbxGioiTinh;
     private FormDate dayNgaySinh;
 
-    public KhachHangDialog(KhachHang jPanelKH, JFrame owner, String title, boolean modal, String type) {
+    KhachHang jPanelKH;
+    KhachHangDTO khDTO;
+    KhachHangBUS khachHangBUS = new KhachHangBUS();
+
+    public KhachHangDialog(KhachHang jpKH, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
-        this.jPanelKH = jPanelKH;
+        this.jPanelKH = jpKH;
         tenNguoiDung = new FormInput("Tên khách hàng");
         Email = new FormInput("Email");
 
@@ -89,7 +90,7 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
         dayNgaySinh = new FormDate("Ngày sinh");
         setNgay_Sinh(kh.getNgay_Sinh());
 
-        this.jPanelKH = jPanelKH;
+        this.jPanelKH = jpKH;
         initComponents(title, type);
     }
 
@@ -112,7 +113,7 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
         pnlButtom = new JPanel(new FlowLayout());
         pnlButtom.setBorder(new EmptyBorder(10, 0, 10, 0));
         pnlButtom.setBackground(Color.white);
-        btnThem = new ButtonCustome("Thêm khách hàng", "success", 14);
+        btnThem = new ButtonCustome("Thêm người dùng", "success", 14);
         btnCapNhat = new ButtonCustome("Lưu thông tin", "success", 14);
         btnHuyBo = new ButtonCustome("Huỷ bỏ", "danger", 14);
 
@@ -171,8 +172,8 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
         Email.setText(email);
     }
 
-    public String getNgay_Sinh() {
-        return dayNgaySinh.getFormattedDate();
+    public Date getNgay_Sinh() {
+        return dayNgaySinh.getDate();
     }
 
     public void setNgay_Sinh(Date Ngay_Sinh) {
@@ -217,14 +218,43 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     }
 
     boolean Validation() {
+
+        int currentID = (khDTO != null) ? khDTO.getID() : -1;
+
         if (Validation.isEmpty(tenNguoiDung.getText())) {
             JOptionPane.showMessageDialog(this, "Tên người dùng không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (Validation.isEmpty(soDienThoai.getText()) || !Validation.isNumber(soDienThoai.getText()) && soDienThoai.getText().length() != 10) {
+        }
+        if (Validation.isEmpty(soDienThoai.getText()) || !Validation.isNumber(soDienThoai.getText()) && soDienThoai.getText().length() != 10) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không được rỗng và phải là 10 ký tự số", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (Validation.isEmpty(Email.getText())) {
+        }
+        if (Validation.isEmpty(Email.getText())) {
             JOptionPane.showMessageDialog(this, "Email không được rỗng", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (getNgay_Sinh() == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        String gioiTinh = isGioi_Tinh();
+        if (gioiTinh == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn giới tính", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        String trangThai = getStatus();
+        if (trangThai == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn trạng thái", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (KhachHangDAO.getInstance().isEmailUnique(Email.getText(), currentID)) {
+            JOptionPane.showMessageDialog(this, "Email đã được sử dụng!", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (KhachHangDAO.getInstance().isPhoneNumberUnique(soDienThoai.getText(), currentID)) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại đã được sử dụng!", "Cảnh báo !", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
@@ -239,14 +269,30 @@ public final class KhachHangDialog extends JDialog implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == btnThem && Validation()) {
             int id = KhachHangDAO.getInstance().getAutoIncrement();
-            jPanelKH.khachhangBUS.add(new DTO.KhachHangDTO(id, tenNguoiDung.getText(), Email.getText(), soDienThoai.getText()));
+
+            jPanelKH.khachhangBUS.add(new DTO.KhachHangDTO(id,
+                    tenNguoiDung.getText(),
+                    Email.getText(),
+                    soDienThoai.getText(),
+                    getVai_Tro(),
+                    dayNgaySinh.getDate(),
+                    isGioi_Tinh().equals("Nữ"),
+                    getStatus().equals("Hoạt động") ? 1 : 0));
             jPanelKH.loadDataTable(jPanelKH.listkh);
             dispose();
 
         } else if (e.getSource() == btnHuyBo) {
             dispose();
         } else if (e.getSource() == btnCapNhat && Validation()) {
-            jPanelKH.khachhangBUS.update(new KhachHangDTO(khDTO.getID(), tenNguoiDung.getText(), Email.getText(), soDienThoai.getText()));
+            jPanelKH.khachhangBUS.update(new KhachHangDTO(
+                    khDTO.getID(),
+                    tenNguoiDung.getText(),
+                    Email.getText(),
+                    soDienThoai.getText(),
+                    getVai_Tro(),
+                    dayNgaySinh.getDate(),
+                    isGioi_Tinh().equals("Nữ"),
+                    getStatus().equals("Hoạt động") ? 1 : 0));
             jPanelKH.loadDataTable(jPanelKH.listkh);
             dispose();
         }

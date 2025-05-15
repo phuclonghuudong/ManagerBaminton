@@ -4,6 +4,8 @@ import GUI.Log_In;
 import GUI.Main;
 import GUI.Panel.DichVu;
 import GUI.Panel.KhachHang;
+import GUI.Panel.LoaiSan;
+import GUI.Panel.LoaiSanPham;
 import GUI.Panel.San;
 import GUI.Panel.TrangChu;
 import java.awt.*;
@@ -33,13 +35,30 @@ public class MenuTaskbar extends JPanel {
     San sanCauLong;
     KhachHang khachHang;
     DichVu dichVu;
+    LoaiSan loaiSan;
+    LoaiSanPham loaiSanPham;
 
     String[][] getSt = {
         {"Trang chủ", "home.svg", "trangchu"},
+        {"Loại sân", "brand.svg", "loaisan"},
         {"Sân", "product.svg", "san"},
+        {"Loại sản phẩm", "import.svg", "loaisanpham"},
         {"Dịch vụ", "brand.svg", "dichvu"},
         {"Khách hàng", "customer.svg", "khachhang"},
         {"Đăng xuất", "log_out.svg", "dangxuat"},};
+//     {"Trang chủ", "home.svg", "trangchu"},
+//        {"Sản phẩm", "product.svg", "sanpham"},
+//        {"Thuộc tính", "brand.svg", "thuoctinh"},
+//        {"Khu vực kho", "area.svg", "khuvuckho"},
+//        {"Phiếu nhập", "import.svg", "nhaphang"},
+//        {"Phiếu xuất", "export.svg", "xuathang"},
+//        {"Khách hàng", "customer.svg", "khachhang"},
+//        {"Nhà cung cấp", "supplier.svg", "nhacungcap"},
+//        {"Nhân viên", "staff.svg", "nhanvien"},
+//        {"Tài khoản", "account.svg", "taikhoan"},
+//        {"Thống kê", "statistical.svg", "thongke"},
+//        {"Phân quyền", "permission.svg", "nhomquyen"},
+//        {"Đăng xuất", "log_out.svg", "dangxuat"},
 
     public itemTaskbar[] listitem;
 
@@ -147,19 +166,35 @@ public class MenuTaskbar extends JPanel {
         listitem[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
-                sanCauLong = new San(main);
-                main.setPanel(sanCauLong);
+                loaiSan = new LoaiSan(main);
+                main.setPanel(loaiSan);
 
             }
         });
         listitem[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
+                sanCauLong = new San(main);
+                main.setPanel(sanCauLong);
+
+            }
+        });
+        listitem[3].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+                loaiSanPham = new LoaiSanPham(main);
+                main.setPanel(loaiSanPham);
+
+            }
+        });
+        listitem[4].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
                 dichVu = new DichVu(main);
                 main.setPanel(dichVu);
             }
         });
-        listitem[3].addMouseListener(new MouseAdapter() {
+        listitem[5].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 khachHang = new KhachHang(main);
@@ -167,7 +202,7 @@ public class MenuTaskbar extends JPanel {
             }
         });
 
-        listitem[4].addMouseListener(new MouseAdapter() {
+        listitem[6].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
 

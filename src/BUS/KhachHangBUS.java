@@ -46,6 +46,9 @@ public class KhachHangBUS {
         if (KhachHangDAO.getInstance().selectByEmail(user.getEmail())) {
             return "Email đã tồn tại.";
         }
+        if (KhachHangDAO.getInstance().selectByPhone(user.getSo_Dien_Thoai())) {
+            return "Số điện thoại đã tồn tại.";
+        }
 
         String hashedPassword = ValidationUtil.hashPassword(user.getMat_Khau());
         user.setMat_Khau(hashedPassword);

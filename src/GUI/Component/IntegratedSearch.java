@@ -25,11 +25,11 @@ public class IntegratedSearch extends JPanel {
         this.setLayout(bx);
 
         JPanel jpSearch = new JPanel(new BorderLayout(5, 10));
-        jpSearch.setBorder(new EmptyBorder(18, 15, 18, 15));
+        jpSearch.setBorder(new EmptyBorder(20, 15, 20, 15));
         jpSearch.setBackground(Color.white);
         cbxChoose = new JComboBox();
         cbxChoose.setModel(new DefaultComboBoxModel<>(str));
-        cbxChoose.setPreferredSize(new Dimension(140, 30));
+        cbxChoose.setPreferredSize(new Dimension(120, 20));
         cbxChoose.setFont(new Font("Tahoma", Font.PLAIN, 13));
         cbxChoose.setBackground(new Color(255, 204, 153));
         cbxChoose.setForeground(new Color(50, 50, 50));
@@ -71,6 +71,7 @@ public class IntegratedSearch extends JPanel {
         jpSearch.add(cbxChoose, BorderLayout.WEST);
 
         txtSearchForm = new JTextField();
+        txtSearchForm.setPreferredSize(new Dimension(120, 20));
         txtSearchForm.setFont(new Font("Tahoma", Font.PLAIN, 13));
         txtSearchForm.setBorder(new EmptyBorder(2, 10, 2, 10));
         txtSearchForm.setBackground(new Color(238, 241, 218));
@@ -81,7 +82,7 @@ public class IntegratedSearch extends JPanel {
         btnReset = new JButton("Làm mới");
         btnReset.setBackground(new Color(255, 204, 153));
         btnReset.setForeground(Color.BLACK);
-        btnReset.setPreferredSize(new Dimension(125, 40));
+        btnReset.setPreferredSize(new Dimension(100, 20));
         btnReset.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnReset.setBorderPainted(false);
         btnReset.setContentAreaFilled(false);
@@ -89,7 +90,7 @@ public class IntegratedSearch extends JPanel {
         btnReset.setOpaque(true);
         btnReset.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
-        btnReset.setIcon(SvgImageComponent.loadSvgAsIcon("refresh.svg", 35, 30));
+        btnReset.setIcon(SvgImageComponent.loadSvgAsIcon("refresh.svg", 35, 20));
 
         btnReset.addMouseListener(new MouseAdapter() {
             @Override

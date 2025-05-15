@@ -40,7 +40,7 @@ public class FormDate extends JPanel {
                 calendarButton.setBorder(new EmptyBorder(10, 10, 10, 10));
                 calendarButton.setBackground(StyleColor.colorForm());
                 calendarButton.setPreferredSize(new Dimension(40, 10));
-                break; // đã tìm thấy thì thoát khỏi vòng lặp
+                break;
             }
         }
 
@@ -71,6 +71,10 @@ public class FormDate extends JPanel {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(date);
+    }
+
+    public Date getDate() {
+        return dateChooser.getDate();
     }
 
     public void setEnabled(boolean enabled) {

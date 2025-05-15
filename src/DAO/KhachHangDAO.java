@@ -113,15 +113,36 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             }
 
             JDBCUtil.closeConnection(conn);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
         }
 
         return list;
     }
 
     public KhachHangDTO selectById(String p) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        KhachHangDTO result = null;
+        try {
+            Connection con = (Connection) JDBCUtil.getConnection();
+            String sql = "SELECT * FROM khach_hang WHERE ID=?";
+            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            pst.setString(1, p);
+            ResultSet rs = (ResultSet) pst.executeQuery();
+            while (rs.next()) {
+                int ID = rs.getInt("ID");
+                String tenNguoiDung = rs.getString("Ten_Nguoi_Dung");
+                String email = rs.getString("Email");
+                String soDienThoai = rs.getString("So_Dien_Thoai");
+                String vaiTro = rs.getString("Vai_Tro");
+                Date ngaySinh = rs.getDate("Ngay_Sinh");
+                boolean gioiTinh = rs.getBoolean("Gioi_Tinh");
+                int status = rs.getInt("Status");
+                result = new KhachHangDTO(ID, tenNguoiDung, email, soDienThoai, vaiTro, ngaySinh, gioiTinh, status);
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
     }
 
     @Override
@@ -153,28 +174,27 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
             pst.setString(1, p);
             ResultSet rs = (ResultSet) pst.executeQuery();
-//            while (rs.next()) {
-//                int ID = rs.getInt("ID");
-//                String Ten_Nguoi_Dung = rs.getString("Ten_Nguoi_Dung");
-//                String Email = rs.getString("Email");
-//                Date Ngay_Sinh = rs.getDate("Ngay_Sinh");
-//                String So_Dien_Thoai = rs.getString("So_Dien_Thoai");
-//                String Mat_Khau = rs.getString("Mat_Khau");
-//                String Vai_Tro = rs.getString("Vai_Tro");
-//                boolean Gioi_Tinh = rs.getBoolean("Gioi_Tinh");
-//                Date Ngay_Tao = rs.getDate("Ngay_Tao");
-//                Date Ngay_Cap_Nhat = rs.getDate("Ngay_Cap_Nhat");
-//                int Status = rs.getInt("Status");
-//                KhachHangDTO tk = new KhachHangDTO(ID, Ten_Nguoi_Dung, Email, Ngay_Sinh, So_Dien_Thoai, Mat_Khau, Vai_Tro, Gioi_Tinh, Ngay_Tao, Ngay_Cap_Nhat, Status);
-//                result = tk;
-//            }
             return rs.next();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
+        }
+        return false;
+    }
+
+    public boolean selectByPhone(String p) {
+        try {
+            Connection con = (Connection) JDBCUtil.getConnection();
+            String sql = "SELECT * FROM khach_hang WHERE So_Dien_Thoai=?";
+            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            pst.setString(1, p);
+            ResultSet rs = (ResultSet) pst.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
-
     }
 
     public KhachHangDTO getUserByEmailAndPassword(String email, String hashedPassword) {
@@ -205,6 +225,39 @@ public class KhachHangDAO implements DAOinterface<KhachHangDTO> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean isEmailUnique(String p, int ID) {
+        try {
+            Connection con = (Connection) JDBCUtil.getConnection();
+            String sql = "SELECT * FROM khach_hang WHERE Email=? AND ID<>?";
+            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            pst.setString(1, p);
+            pst.setInt(2, ID);
+            ResultSet rs = (ResultSet) pst.executeQuery();
+            return rs.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isPhoneNumberUnique(String p, int ID) {
+        try {
+            Connection con = (Connection) JDBCUtil.getConnection();
+            String sql = "SELECT * FROM khach_hang WHERE So_Dien_Thoai=? AND ID<> ?";
+            PreparedStatement pst = (PreparedStatement) con.prepareStatement(sql);
+            pst.setString(1, p);
+            pst.setInt(2, ID);
+            ResultSet rs = (ResultSet) pst.executeQuery();
+
+            return rs.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

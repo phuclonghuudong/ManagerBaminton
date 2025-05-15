@@ -8,8 +8,8 @@ public class KhachHangDTO {
     private int ID;
     private String Ten_Nguoi_Dung;
     private String Email;
-    private Date Ngay_Sinh;
     private String So_Dien_Thoai;
+    private Date Ngay_Sinh;
     private String Mat_Khau;
     private String Vai_Tro;
     private boolean Gioi_Tinh;
@@ -20,17 +20,28 @@ public class KhachHangDTO {
     public KhachHangDTO() {
     }
 
-    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, String So_Dien_Thoai) {
-//    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, Date Ngay_Sinh, String So_Dien_Thoai, String Vai_Tro, boolean Gioi_Tinh, Date Ngay_Cap_Nhat, int Status) {
+    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, String So_Dien_Thoai, String Vai_Tro, Date Ngay_Sinh, boolean Gioi_Tinh, int Status) {
         this.ID = ID;
         this.Ten_Nguoi_Dung = Ten_Nguoi_Dung;
         this.Email = Email;
         this.So_Dien_Thoai = So_Dien_Thoai;
-//        this.Ngay_Sinh = Ngay_Sinh;
-//        this.Vai_Tro = Vai_Tro;
-//        this.Gioi_Tinh = Gioi_Tinh;
-//        this.Ngay_Cap_Nhat = Ngay_Cap_Nhat;
-//        this.Status = Status;
+        this.Ngay_Sinh = Ngay_Sinh;
+        this.Vai_Tro = Vai_Tro;
+        this.Gioi_Tinh = Gioi_Tinh;
+        this.Status = Status;
+    }
+
+    public KhachHangDTO(int ID, String Ten_Nguoi_Dung, String Email, String So_Dien_Thoai, String Vai_Tro, Date Ngay_Sinh, boolean Gioi_Tinh, int Status, Date Ngay_Tao, Date Ngay_Cap_Nhat) {
+        this.ID = ID;
+        this.Ten_Nguoi_Dung = Ten_Nguoi_Dung;
+        this.Email = Email;
+        this.So_Dien_Thoai = So_Dien_Thoai;
+        this.Ngay_Sinh = Ngay_Sinh;
+        this.Vai_Tro = Vai_Tro;
+        this.Gioi_Tinh = Gioi_Tinh;
+        this.Status = Status;
+        this.Ngay_Tao = Ngay_Tao;
+        this.Ngay_Cap_Nhat = Ngay_Cap_Nhat;
     }
 
     @Override

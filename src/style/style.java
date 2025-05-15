@@ -178,10 +178,11 @@ public class style {
 
 //  Table Model
     public void customizeTable(JTable table) {
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        table.setFont(new Font("Tahoma", Font.PLAIN, 14));
         table.setRowHeight(32);
         table.setShowGrid(false);
         table.setBorder(null);
+        table.getColumnModel().getColumn(0).setPreferredWidth(10);
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
@@ -212,7 +213,7 @@ public class style {
                 label.setHorizontalAlignment(JLabel.CENTER);
                 label.setBackground(new Color(255, 204, 153));
                 label.setForeground(Color.BLACK);
-                label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                label.setFont(new Font("Tahoma", Font.BOLD, 14));
                 label.setOpaque(true);
                 return label;
             }

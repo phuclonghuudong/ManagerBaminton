@@ -12,7 +12,6 @@ import javax.swing.*;
 public class ButtonCustome extends JButton {
 
     public void initComponent(String type, String text, int fontsize, int width, int height) {
-        this.setText(text);
         Color colorKey;
         switch (type) {
             case "success":
@@ -36,8 +35,9 @@ public class ButtonCustome extends JButton {
             default:
                 colorKey = Color.WHITE;
         }
+        this.setText(text.toUpperCase());
         this.setBackground(colorKey);
-        this.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        this.setFont(new Font("Tahoma", Font.BOLD, 14));
         this.setForeground(Color.WHITE);
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
@@ -63,7 +63,7 @@ public class ButtonCustome extends JButton {
     }
 
     public ButtonCustome(String text, String type, int fontsize) {
-        initComponent(type, text, fontsize, 150, 40);
+        initComponent(type, text, fontsize, 190, 40);
     }
 
     public ButtonCustome(String text, String type, int fontsize, int w, int h) {

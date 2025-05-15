@@ -8,9 +8,14 @@ import GUI.Component.PanelBorderRadius;
 import GUI.Component.TableModel;
 import GUI.Dialog.KhachHangDialog;
 import GUI.Main;
+import helper.Formater;
+import helper.JTableExporter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -43,8 +48,8 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
         this.setOpaque(true);
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] header = new String[]{"Mã khách hàng", "Tên khách hàng", "Email", "Số điện thoại", "Giới tính", "Vai trò", "Ngày tham gia", "Trạng thái"};
-        String[] methodNames = {"getID", "getTen_Nguoi_Dung", "getEmail", "getSo_Dien_Thoai", "isGioi_Tinh", "getVai_Tro", "getNgay_Tao", "getStatus"};
+        String[] header = new String[]{"STT", "Mã ID", "Tên khách hàng", "Email", "Số điện thoại", "Giới tính", "Vai trò", "Sinh Nhật", "Trạng thái"};
+        String[] methodNames = {"", "getID", "getTen_Nguoi_Dung", "getEmail", "getSo_Dien_Thoai", "isGioi_Tinh", "getVai_Tro", "getNgay_Sinh", "getStatus"};
 
         tableModel = new TableModel<>(listkh, header, methodNames);
         tableKhachHang = new JTable(tableModel);
@@ -66,6 +71,7 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
         tableKhachHang.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         tableKhachHang.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
         tableKhachHang.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+        tableKhachHang.getColumnModel().getColumn(8).setCellRenderer(centerRenderer);
 
         tableKhachHang.setAutoCreateRowSorter(true);
 
@@ -80,7 +86,7 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
         functionBar.setLayout(new GridLayout(1, 2, 50, 0));
         functionBar.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        String[] action = {"create", "update", "delete", "detail"};
+        String[] action = {"create", "update", "delete", "detail", "export"};
         mainFunction = new MainFunction("khachhang", action);
         for (String ac : action) {
             mainFunction.btn.get(ac).addActionListener(this);
@@ -134,13 +140,31 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
     }
 
     public void loadDataTable(ArrayList<KhachHangDTO> result) {
-        ((TableModel<KhachHangDTO>) tableKhachHang.getModel()).setData(result);
-//        tblModel.setRowCount(0);
-//        for (DTO.KhachHangDTO khachHang : result) {
-//            tblModel.addRow(new Object[]{
-//                khachHang.getID(), khachHang.getTen_Nguoi_Dung(), khachHang.getEmail(), khachHang.getSo_Dien_Thoai(), khachHang.isGioi_Tinh(), khachHang.getVai_Tro(), khachHang.getNgay_Tao(), khachHang.getStatus()
-//            });
-//        }
+        String[] columnNames = new String[]{"STT", "Mã ID", "Tên khách hàng", "Email", "Số điện thoại", "Giới tính", "Vai trò", "Sinh Nhật", "Trạng thái"};
+        tblModel = new DefaultTableModel(columnNames, 0);
+
+        for (int i = 0; i < result.size(); i++) {
+            String gioiTinh = result.get(i).isGioi_Tinh() ? "Nam" : "Nữ";
+            String ngaySinh = result.get(i).getNgay_Sinh() != null ? Formater.FormatDate(result.get(i).getNgay_Sinh()) : "";
+            String trangThai = result.get(i).getStatus() == 1 ? "Hoạt động" : "Dừng";
+
+            tblModel.addRow(new Object[]{
+                i + 1,
+                result.get(i).getID(),
+                result.get(i).getTen_Nguoi_Dung(),
+                result.get(i).getEmail(),
+                result.get(i).getSo_Dien_Thoai(),
+                gioiTinh,
+                result.get(i).getVai_Tro(),
+                ngaySinh,
+                trangThai
+            });
+        }
+
+        tableKhachHang.setModel(tblModel);
+        style.customizeTable(tableKhachHang);
+
+//        ((TableModel<KhachHangDTO>) tableKhachHang.getModel()).setData(result);
     }
 
     /**
@@ -168,17 +192,17 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == mainFunction.btn.get("create")) {
-            KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Thêm khách hàng", true, "create");
+            KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Thêm người dùng", true, "create");
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Chỉnh sửa khách hàng", true, "update", listkh.get(index));
+                KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Chỉnh sửa người dùng", true, "update", listkh.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("delete")) {
             int index = getRowSelected();
             if (index != -1) {
                 int input = JOptionPane.showConfirmDialog(null,
-                        "Bạn có chắc chắn muốn xóa khách hàng ?", "Xóa khách hàng",
+                        "Bạn có chắc chắn muốn xóa người dùng ?", "Xóa người dùng",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (input == 0) {
                     khachhangBUS.delete(listkh.get(index));
@@ -188,18 +212,18 @@ public class KhachHang extends JPanel implements ActionListener, ItemListener {
         } else if (e.getSource() == mainFunction.btn.get("detail")) {
             int index = getRowSelected();
             if (index != -1) {
-                KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Xem khách hàng", true, "view", listkh.get(index));
+                KhachHangDialog khDialog = new KhachHangDialog(this, owner, "Xem người dùng", true, "view", listkh.get(index));
             }
+        } else if (e.getSource() == mainFunction.btn.get("export")) {
+            try {
+                JTableExporter.exportJTableToExcel(tableKhachHang);
+
+            } catch (IOException ex) {
+                Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-//        else if (e.getSource() == mainFunction.btn.get("import")) {
-//            importExcel();
-//        } else if (e.getSource() == mainFunction.btn.get("export")) {
-//            try {
-//                JTableExporter.exportJTableToExcel(tableKhachHang);
-//            } catch (IOException ex) {
-//                Logger.getLogger(KhachHang.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+
     }
 
     @Override

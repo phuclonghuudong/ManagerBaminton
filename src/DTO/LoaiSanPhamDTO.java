@@ -16,12 +16,19 @@ public class LoaiSanPhamDTO {
         return "LoaiSanPhamDTO{" + "ID=" + ID + ", Ten_Loai=" + Ten_Loai + ", Mo_Ta=" + Mo_Ta + ", Ngay_Tao=" + Ngay_Tao + ", Ngay_Cap_Nhat=" + Ngay_Cap_Nhat + ", status=" + Status + '}';
     }
 
-    public LoaiSanPhamDTO(int ID, String Ten_Loai, String Mo_Ta, Date Ngay_Tao, Date Ngay_Cap_Nhat, int status) {
-        this.ID = ID;
+    public LoaiSanPhamDTO(int id, String Ten_Loai, String Mo_Ta, Date Ngay_Tao, Date Ngay_Cap_Nhat, int status) {
+        this.ID = id;
         this.Ten_Loai = Ten_Loai;
         this.Mo_Ta = Mo_Ta;
         this.Ngay_Tao = Ngay_Tao;
         this.Ngay_Cap_Nhat = Ngay_Cap_Nhat;
+        this.Status = status;
+    }
+
+    public LoaiSanPhamDTO(int id, String tenLoai, String moTa, int status) {
+        this.ID = id;
+        this.Ten_Loai = tenLoai;
+        this.Mo_Ta = moTa;
         this.Status = status;
     }
 

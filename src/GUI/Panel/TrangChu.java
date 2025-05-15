@@ -1,7 +1,9 @@
 package GUI.Panel;
 
+import GUI.Component.TitleHome;
 import java.awt.*;
 import javax.swing.*;
+import style.StyleColor;
 import style.style;
 
 /**
@@ -11,6 +13,7 @@ import style.style;
 public class TrangChu extends JPanel {
 
     style style = new style();
+    StyleColor colorStyle = new StyleColor();
 
     JPanel top, center, bar1, bar2;
 
@@ -26,19 +29,35 @@ public class TrangChu extends JPanel {
         this.setLayout(new BorderLayout(0, 0));
         this.setOpaque(true);
 
-        top = new JPanel();
-        top.setBackground(style.mainBackgroundColorOrange());
-        top.setPreferredSize(new Dimension(1100, 200));
-        top.setLayout(new FlowLayout(1, 0, 10));
+        top = new JPanel(new GridLayout(8, 1, 5, 5));
+        top.setBackground(colorStyle.mainBackgroundColor1());
+        top.setPreferredSize(new Dimension(1100, 450));
+//        top.setLayout(new BorderLayout());
+        top.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
 
-        JLabel slogan = new JLabel();
-        top.add(slogan);
+        TitleHome title = new TitleHome("TRƯỜNG ĐẠI HỌC QUỐC GIA - TRƯỜNG ĐAI HỌC CÔNG NGHỆ THÔNG TIN", 13);
+        top.add(title);
+
+        TitleHome titleBB = new TitleHome("BÁO CÁO ĐỒ ÁN", 30);
+        top.add(titleBB);
+        TitleHome titleB = new TitleHome("IE303.E22.LT.CNTT - CÔNG NGHỆ JAVA ", 28);
+        top.add(titleB);
+        TitleHome titleA = new TitleHome("HỆ THỐNG SÂN CẦU LÔNG", 18);
+        top.add(titleA);
+        TitleHome titleC = new TitleHome("NHÓM 10", "LỚP LT.K2024.1", 20, 20);
+        top.add(titleC);
+        TitleHome titleD1 = new TitleHome("Ngô Thị Châu Phụng", "MSSV: 24410087", 16, 16);
+        top.add(titleD1);
+        TitleHome titleD2 = new TitleHome("Đỗ Hùng Mạnh", "MSSV: 24410067", 16, 16);
+        top.add(titleD2);
+        TitleHome titleD3 = new TitleHome("Phạm Hồng Phúc", "MSSV: 24410086", 16, 16);
+        top.add(titleD3);
 
         this.add(top, BorderLayout.NORTH);
 
         center = new JPanel();
-        center.setBackground(Color.BLACK);
-        center.setPreferredSize(new Dimension(1100, 800));
+        center.setBackground(colorStyle.mainBackgroundColor());
+        center.setPreferredSize(new Dimension(1100, 400));
         center.setLayout(new FlowLayout(1, 50, 50));
         this.add(center, BorderLayout.CENTER);
     }
@@ -52,29 +71,18 @@ public class TrangChu extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
-        jLabel1.setText("TRANG CHỦ");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(324, 324, 324)
-                .addComponent(jLabel1)
-                .addContainerGap(641, Short.MAX_VALUE))
+            .addGap(0, 1030, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jLabel1)
-                .addContainerGap(525, Short.MAX_VALUE))
+            .addGap(0, 670, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

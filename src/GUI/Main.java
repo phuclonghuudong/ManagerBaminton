@@ -26,7 +26,7 @@ public class Main extends javax.swing.JFrame {
         this.setSize(new Dimension(1280, 670));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(0, 0));
-        this.setTitle("Hệ thống sân cầu lông ");
+        this.setTitle("Hệ thống sân cầu lông - Trường Đại học Quốc gia - Đại học Công nghệ Thông tin");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         menuTaskbar = new MenuTaskbar(this);
