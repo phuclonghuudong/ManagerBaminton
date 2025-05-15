@@ -27,6 +27,10 @@ public class LoaiSanPhamBUS {
         return this.listLoaiSP.get(index);
     }
 
+    public ArrayList<LoaiSanPhamDTO> getAllStatus() {
+        return loaiSanPhamDAO.selectAllStatus();
+    }
+
     public int getIndexByMaDV(int ID) {
         int i = 0;
         int vitri = -1;

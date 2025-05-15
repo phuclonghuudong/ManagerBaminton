@@ -28,8 +28,8 @@ public class DatabaseInitializer {
                     + "Gia_San DECIMAL(10,2),"
                     + "Mo_Ta TEXT,"
                     + "Status INT,"
-                    + "Ngay_Tao DATETIME,"
-                    + "Ngay_Cap_Nhat DATETIME"
+                    + "Ngay_Tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,"
+                    + "Ngay_Cap_Nhat TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
                     + ");";
 
 //            sql += "CREATE TABLE IF NOT EXISTS KHACH_HANG ("
@@ -112,7 +112,7 @@ public class DatabaseInitializer {
 //
 //            sql += "CREATE TABLE IF NOT EXISTS SAN_PHAM ("
 //                    + "ID INT PRIMARY KEY AUTO_INCREMENT,"
-//                    + "Loai_San_Pham_ID INT,"
+//                    + "Loai_San_Pham INT,"
 //                    + "Ten_San_Pham VARCHAR(255),"
 //                    + "Gia_Ban DECIMAL(10,2),"
 //                    + "So_Luong INT,"

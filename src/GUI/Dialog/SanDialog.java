@@ -49,7 +49,7 @@ public final class SanDialog extends JDialog implements MouseListener {
 
     public SanDialog(San jpSan, JFrame owner, String title, boolean modal, String type) {
         super(owner, title, modal);
-        String[] listStatus = new String[]{"Hoạt động", "Dừng"};
+        String[] listStatus = new String[]{"Hoạt động", "Dừng", "Bảo trì"};
         listLoaiSan = loaiSanBUS.getAllStatus();
         String[] loaiSanNames = listLoaiSan.stream()
                 .map(LoaiSanDTO::getTen_Loai)
@@ -87,7 +87,7 @@ public final class SanDialog extends JDialog implements MouseListener {
         txtMoTa = new FormInput("Mô tả");
         setMo_Ta(san.getMo_Ta());
 
-        String[] listStatus = new String[]{"Hoạt động", "Dừng"};
+        String[] listStatus = new String[]{"Hoạt động", "Dừng", "Bảo trì"};
         txtTrangThai = new FormCheckbox("Trạng thái", listStatus);
         setStatus(san.getStatus());
 
@@ -181,6 +181,17 @@ public final class SanDialog extends JDialog implements MouseListener {
         int index = cbxLoaiSan.getSelectedIndex();
         int idLoaiSan = listLoaiSan.get(index).getID();
 
+        int trangThai;
+        String status = getStatus();
+
+        if (status != null && status.equals("Hoạt động")) {
+            trangThai = 1;
+        } else if (status != null && status.equals("Bảo trì")) {
+            trangThai = 2;
+        } else {
+            trangThai = 0; // Dừng
+        }
+
         if (e.getSource() == btnThem && Validation()) {
             int id = SanDAO.getInstance().getAutoIncrement();
 
@@ -189,7 +200,7 @@ public final class SanDialog extends JDialog implements MouseListener {
                     idLoaiSan,
                     Double.parseDouble(txtGiaSan.getText()),
                     txtMoTa.getText(),
-                    getStatus().equals("Hoạt động") ? 1 : 0));
+                    trangThai));
             jPanelSan.listDS = jPanelSan.sanBUS.getAllLoaiSan();
             jPanelSan.loadDataTable(jPanelSan.listDS);
             dispose();
@@ -203,7 +214,7 @@ public final class SanDialog extends JDialog implements MouseListener {
                     idLoaiSan,
                     Double.parseDouble(txtGiaSan.getText()),
                     txtMoTa.getText(),
-                    getStatus().equals("Hoạt động") ? 1 : 0));
+                    trangThai));
             jPanelSan.listDS = jPanelSan.sanBUS.getAllLoaiSan();
             jPanelSan.loadDataTable(jPanelSan.listDS);
             dispose();
@@ -264,7 +275,7 @@ public final class SanDialog extends JDialog implements MouseListener {
     }
 
     public void setStatus(int giatri) {
-        String[] value = new String[]{giatri == 1 ? "Hoạt động" : "Dừng"};
+        String[] value = new String[]{giatri == 1 ? "Hoạt động" : giatri == 2 ? "Bảo trì" : "Dừng"};
         txtTrangThai.setSelectedValues(value);
     }
 

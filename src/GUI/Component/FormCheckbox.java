@@ -35,7 +35,7 @@ public class FormCheckbox extends JPanel {
         int count = options.length;
         GridLayout grid;
         if (count == 3) {
-            grid = new GridLayout(2, 3, 0, 0);
+            grid = new GridLayout(1, 3, 0, 0);
         } else if (count > 3) {
             grid = new GridLayout(2, count / 2, 0, 0);
         } else {

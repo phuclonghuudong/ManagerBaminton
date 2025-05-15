@@ -158,4 +158,30 @@ public class LoaiSanPhamDAO implements DAOinterface<LoaiSanPhamDTO> {
         }
         return false;
     }
+
+    public ArrayList<LoaiSanPhamDTO> selectAllStatus() {
+        ArrayList<LoaiSanPhamDTO> list = new ArrayList<>();
+        try {
+            Connection conn = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM loai_san_pham WHERE status=1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                LoaiSanPhamDTO cat = new LoaiSanPhamDTO();
+                cat.setID(rs.getInt("ID"));
+                cat.setTen_Loai(rs.getString("Ten_Loai"));
+                cat.setMo_Ta(rs.getString("Mo_Ta"));
+                cat.setNgay_Tao(rs.getDate("Ngay_Tao"));
+                cat.setNgay_Cap_Nhat(rs.getDate("Ngay_Cap_Nhat"));
+                cat.setStatus(rs.getInt("Status"));
+                list.add(cat);
+            }
+
+            JDBCUtil.closeConnection(conn);
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
 }

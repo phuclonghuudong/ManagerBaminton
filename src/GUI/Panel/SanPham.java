@@ -1,12 +1,12 @@
 package GUI.Panel;
 
-import BUS.SanBUS;
-import DTO.SanDTO;
+import BUS.SanPhamBUS;
+import DTO.SanPhamDTO;
 import GUI.Component.IntegratedSearch;
 import GUI.Component.MainFunction;
 import GUI.Component.PanelBorderRadius;
 import GUI.Component.TableModel;
-import GUI.Dialog.SanDialog;
+import GUI.Dialog.SanPhamDialog;
 import GUI.Main;
 import helper.Formater;
 import helper.JTableExporter;
@@ -32,7 +32,7 @@ import style.style;
  *
  * @author phucp
  */
-public class San extends JPanel implements ActionListener, ItemListener {
+public class SanPham extends JPanel implements ActionListener, ItemListener {
 
     StyleColor colorStyle = new StyleColor();
     style style = new style();
@@ -42,14 +42,14 @@ public class San extends JPanel implements ActionListener, ItemListener {
 
     JTable tableContent;
 
-    public SanBUS sanBUS = new SanBUS();
-    public ArrayList<SanDTO> listDS = sanBUS.getAllLoaiSan();
-    private TableModel<SanDTO> tableModel;
+    public SanPhamBUS spBUS = new SanPhamBUS();
+    public ArrayList<SanPhamDTO> listDS = spBUS.getAllLoaiSP();
+    private TableModel<SanPhamDTO> tableModel;
     JFrame owner = (JFrame) SwingUtilities.getWindowAncestor(this);
     IntegratedSearch search;
     DefaultTableModel tblModel;
 
-    public San(Main main) {
+    public SanPham(Main main) {
         this.m = main;
         initComponents();
         initComponent();
@@ -65,8 +65,8 @@ public class San extends JPanel implements ActionListener, ItemListener {
         this.setOpaque(true);
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] header = new String[]{"STT", "ID", "Tên sân", "Loại sân", "Giá sân", "Mô tả", "Trạng thái"};
-        String[] methodNames = {"", "getID", "getTen_San", "getTen_Loai_San", "getGia_San", "getMo_Ta", "getStatus"};
+        String[] header = new String[]{"STT", "Mã SP", "Tên sản phẩm", "Loại sản phẩm", "Giá bán", "Số lương", "Mô tả", "Trạng thái"};
+        String[] methodNames = {"", "getID", "getTen_San", "getTen_Loai_SP", "getGia_Ban", "getSo_Luong", "getMo_Ta", "getStatus"};
 
         tableModel = new TableModel<>(listDS, header, methodNames);
 
@@ -88,6 +88,7 @@ public class San extends JPanel implements ActionListener, ItemListener {
         tableContent.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         tableContent.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
         tableContent.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+        tableContent.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
         tableContent.setAutoCreateRowSorter(true);
 
@@ -109,21 +110,21 @@ public class San extends JPanel implements ActionListener, ItemListener {
         }
         functionBar.add(mainFunction);
 
-        search = new IntegratedSearch(new String[]{"Tất cả", "Mã Sân", "Tên Sân", "Tên loại sân", "Giá sân", "Mô tả", "Trạng thái"});
+        search = new IntegratedSearch(new String[]{"Tất cả", "Mã ID", "Tên sản phẩm", "Tên loại SP", "Giá bán", "Mô tả", "Trạng thái"});
         search.cbxChoose.addItemListener(this);
         search.txtSearchForm.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
                 String type = (String) search.cbxChoose.getSelectedItem();
                 String txt = search.txtSearchForm.getText();
-                listDS = sanBUS.search(txt, type);
+                listDS = spBUS.search(txt, type);
                 loadDataTable(listDS);
             }
         });
 
         search.btnReset.addActionListener((ActionEvent e) -> {
             search.txtSearchForm.setText("");
-            listDS = sanBUS.getAll();
+            listDS = spBUS.getAll();
             loadDataTable(listDS);
         });
         functionBar.add(search);
@@ -137,21 +138,22 @@ public class San extends JPanel implements ActionListener, ItemListener {
         main.add(scrollTable);
     }
 
-    public void loadDataTable(ArrayList<SanDTO> result) {
-        String[] columnNames = new String[]{"STT", "ID", "Tên sân", "Loại sân", "Giá sân", "Mô tả", "Trạng thái"};
+    public void loadDataTable(ArrayList<SanPhamDTO> result) {
+        String[] columnNames = new String[]{"STT", "Mã SP", "Tên sản phẩm", "Loại sản phẩm", "Giá bán", "Số lương", "Mô tả", "Trạng thái"};
         tblModel = new DefaultTableModel(columnNames, 0);
 
         int size = result.size();
 
         for (int i = 0; i < size; i++) {
-            String trangThai = result.get(i).getStatus() == 1 ? "Hoạt động" : result.get(i).getStatus() == 2 ? "Bảo trì" : "Dừng";
+            String trangThai = result.get(i).getStatus() == 1 ? "Hoạt động" : result.get(i).getStatus() == 2 ? "Hết hàng" : "Dừng";
 
             tblModel.addRow(new Object[]{
                 i + 1,
                 result.get(i).getID(),
-                result.get(i).getTen_San(),
-                result.get(i).getTen_Loai_San(),
-                Formater.FormatVND(result.get(i).getGia_San()),
+                result.get(i).getTen_San_Pham(),
+                result.get(i).getTen_Loai_SP(),
+                Formater.FormatVND(result.get(i).getGia_Ban()),
+                result.get(i).getSo_Luong(),
                 result.get(i).getMo_Ta(),
                 trangThai
             });
@@ -181,40 +183,38 @@ public class San extends JPanel implements ActionListener, ItemListener {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1030, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mainFunction.btn.get("create")) {
-            SanDialog sanDialog = new SanDialog(this, owner, "Thêm sân", true, "create");
+            SanPhamDialog t = new SanPhamDialog(this, owner, "Thêm sản phẩm", true, "create");
         } else if (e.getSource() == mainFunction.btn.get("update")) {
             int index = getRowSelected();
             if (index != -1) {
-                SanDialog sanDialog = new SanDialog(this, owner, "Chỉnh sửa sân", true, "update", listDS.get(index));
+                SanPhamDialog t = new SanPhamDialog(this, owner, "Chỉnh sửa sản phẩm", true, "update", listDS.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("delete")) {
             int index = getRowSelected();
             if (index != -1) {
                 int input = JOptionPane.showConfirmDialog(null,
-                        "Bạn có chắc chắn muốn xóa sân này?", "Xóa sân",
+                        "Bạn có chắc chắn muốn xóa sản phẩm này?", "Xóa sản phẩm",
                         JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (input == 0) {
-                    sanBUS.delete(listDS.get(index));
+                    spBUS.delete(listDS.get(index));
                     loadDataTable(listDS);
                 }
             }
         } else if (e.getSource() == mainFunction.btn.get("detail")) {
             int index = getRowSelected();
             if (index != -1) {
-                SanDialog lsDialog = new SanDialog(this, owner, "Xem sân", true, "view", listDS.get(index));
+                SanPhamDialog t = new SanPhamDialog(this, owner, "Xem sản phẩm", true, "view", listDS.get(index));
             }
         } else if (e.getSource() == mainFunction.btn.get("export")) {
             try {
@@ -230,7 +230,10 @@ public class San extends JPanel implements ActionListener, ItemListener {
     public void itemStateChanged(ItemEvent e) {
         String type = (String) search.cbxChoose.getSelectedItem();
         String txt = search.txtSearchForm.getText();
-        listDS = sanBUS.search(txt, type);
+        listDS = spBUS.search(txt, type);
         loadDataTable(listDS);
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
 }

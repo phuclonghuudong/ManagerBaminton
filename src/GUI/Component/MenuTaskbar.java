@@ -2,11 +2,13 @@ package GUI.Component;
 
 import GUI.Log_In;
 import GUI.Main;
+import GUI.Panel.DatSan;
 import GUI.Panel.DichVu;
 import GUI.Panel.KhachHang;
 import GUI.Panel.LoaiSan;
 import GUI.Panel.LoaiSanPham;
 import GUI.Panel.San;
+import GUI.Panel.SanPham;
 import GUI.Panel.TrangChu;
 import java.awt.*;
 import javax.swing.*;
@@ -37,6 +39,8 @@ public class MenuTaskbar extends JPanel {
     DichVu dichVu;
     LoaiSan loaiSan;
     LoaiSanPham loaiSanPham;
+    DatSan datSan;
+    SanPham sanPham;
 
     String[][] getSt = {
         {"Trang chủ", "home.svg", "trangchu"},
@@ -44,6 +48,8 @@ public class MenuTaskbar extends JPanel {
         {"Sân", "product.svg", "san"},
         {"Loại sản phẩm", "import.svg", "loaisanpham"},
         {"Dịch vụ", "brand.svg", "dichvu"},
+        {"Sản phẩm", "export.svg", "sanpham"},
+        {"Đặt sân", "area.svg", "datsan"},
         {"Khách hàng", "customer.svg", "khachhang"},
         {"Đăng xuất", "log_out.svg", "dangxuat"},};
 //     {"Trang chủ", "home.svg", "trangchu"},
@@ -197,12 +203,26 @@ public class MenuTaskbar extends JPanel {
         listitem[5].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
+                sanPham = new SanPham(main);
+                main.setPanel(sanPham);
+            }
+        });
+        listitem[6].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                datSan = new DatSan(main);
+                main.setPanel(datSan);
+            }
+        });
+        listitem[7].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
                 khachHang = new KhachHang(main);
                 main.setPanel(khachHang);
             }
         });
 
-        listitem[6].addMouseListener(new MouseAdapter() {
+        listitem[8].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
 
